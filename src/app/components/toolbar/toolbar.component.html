@@ -1,0 +1,66 @@
+<nav class="nav-extended">
+  <div class="container">
+    <div class="nav-wrapper">
+      <a (click)="goToHome()" style="cursor: pointer" class="brand-logo">ChatApp</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li class="dropdown-button dropdown-trigger" data-target="dropdown">
+          <i class="fa fa-globe fa-1x badge"></i>
+          <span class="nav-label-icon circle" *ngIf="count.length > 0">{{ count.length }}</span>
+          <ul id="dropdown" class="dropdown-content col s12 collection">
+            <li class="collection-item avatar" *ngFor="let data of notifications">
+              <img class="circle responsive-img" src="../../../assets/50x50.png" alt="img" />
+              <span [ngClass]="data.read ? 'isRead' : 'unread'">{{ data.message }}</span>
+              <p class="time">{{ timeFromNow(data.created) }}</p>
+            </li>
+            <li *ngIf="notifications.length <= 0">
+              <p class="text">No Notification</p>
+            </li>
+            <p class="secondary-content">
+              <a class="markAll btn" (click)="markAll()">Mark All As Read</a>
+            </p>
+          </ul>
+        </li>
+        <li class="dropdown-button dropdown-trigger1" data-target="dropdown1">
+          <i class="fa fa-bell fa-1x badge"></i>
+          <span class="nav-label-icon circle" *ngIf="msgNumber > 0">{{ msgNumber }}</span>
+          <ul id="dropdown1" class="dropdown-content col s12 collection">
+            <li class="collection-item avatar" *ngFor="let chat of chatList" (click)="gotoChat(chat.receiverId.username)">
+              <img class="circle responsive-img" src="../../../assets/50x50.png" alt="img" />
+              <span class="title">
+                {{chat.receiverId.username}}
+                <a class="secondary-content">
+                    <!-- 'chat.messageId.message.length-1' to get the last value of an array -->
+                  {{messageDate(chat.messageId.message[chat.messageId.message.length-1].createdAt)}}
+                </a>
+              </span>
+              <p>
+                  {{chat.messageId.message[chat.messageId.message.length-1].body}}
+                  <a class="secondary-content"
+                   *ngIf="!chat.messageId.message[chat.messageId.message.length-1].isRead
+                    && chat.receiverId.username !== chat.messageId.message[chat.messageId.message.length-1].receiverName">
+                      <i class="material-icons">brightness_1</i>
+                  </a>
+                  <a class="secondary-content" *ngIf="chat.messageId.message[chat.messageId.message.length-1].isRead">
+                      <i class="material-icons">panorama_fish_eye</i>
+                  </a>
+              </p>
+            </li>
+            <li *ngIf="chatList.length <= 0">
+              <p class="text">No Messages</p>
+            </li>
+            <p class="secondary-content">
+              <a class="markAll btn" (click)="markAllMessages()">Mark All As Read</a>
+            </p>
+          </ul>
+        </li>
+        <li><a (click)="logout()">Logout</a></li>
+      </ul>
+    </div>
+    <div class="nav-content">
+      <div class="nav-div">
+        <img class="circle responsive-img" src="../../../assets/50x50.png" alt="img" />
+      </div>
+      <h1 class="profile-name">{{ user.username }}</h1>
+    </div>
+  </div>
+</nav>
